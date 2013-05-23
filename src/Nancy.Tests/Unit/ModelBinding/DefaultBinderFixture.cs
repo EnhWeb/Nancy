@@ -292,6 +292,7 @@ namespace Nancy.Tests.Unit.ModelBinding
         }
 
         [Fact]
+<<<<<<< HEAD
         public void Should_not_throw_ModelBindingException_if_convertion_of_property_fails_and_ignore_error_is_true()
         {
             // Given
@@ -323,6 +324,25 @@ namespace Nancy.Tests.Unit.ModelBinding
             
             // Then
             model.AnotherIntProperty.ShouldEqual(10);
+=======
+        public void Should_throw_ModelBindingException_if_convertion_of_a_property_fails_with_bad_date()
+        {
+            // Given
+            var binder = this.GetBinder(typeConverters: new ITypeConverter[] { new FallbackConverter(), new DateTimeConverter() });
+            var context = new NancyContext { Request = new FakeRequest("GET", "/") };
+            context.Request.Form["DateProperty"] = "baddate";
+
+            // Then
+            Assert.Throws<ModelBindingException>(() => binder.Bind(context, typeof(TestModel), null, new BindingConfig()))
+                .ShouldMatch(exception => 
+                             exception.BoundType == typeof (TestModel)
+                             && exception.PropertyBindingExceptions.Any(pe =>
+                                                                        pe.PropertyName == "DateProperty"
+                                                                        && pe.AttemptedValue == "baddate"
+                                                                        &&
+                                                                        pe.InnerException.Message ==
+                                                                        "The string was not recognized as a valid DateTime. There is an unknown word starting at index 0."));
+>>>>>>> added unit test and fixed ordering of type converters
         }
 
         [Fact]

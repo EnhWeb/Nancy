@@ -367,15 +367,17 @@ namespace Nancy.ModelBinding
         {
             var destinationType = modelProperty.PropertyType;
 
-            var typeConverter =
-                context.TypeConverters.FirstOrDefault(c => c.CanConvertTo(destinationType, context));
+            var typeConverter = context.TypeConverters
+                                       .OrderBy(x => x.Order)
+                                       .FirstOrDefault(c => c.CanConvertTo(destinationType, context));
 
-            if (typeConverter != null)
+            try
             {
-                try
+                if (typeConverter != null)
                 {
                     SetPropertyValue(modelProperty, context.Model, typeConverter.Convert(stringValue, destinationType, context));
                 }
+<<<<<<< HEAD
                 catch (Exception e)
                 {
                     throw new PropertyBindingException(modelProperty.Name, stringValue, e);
@@ -401,13 +403,16 @@ namespace Nancy.ModelBinding
                     SetPropertyValue(modelProperty, genericInstance, typeConverter.Convert(stringValue, destinationType, context));
                 }
                 catch (Exception e)
+=======
+                else if (destinationType == typeof(string))
+>>>>>>> added unit test and fixed ordering of type converters
                 {
-                    throw new PropertyBindingException(modelProperty.Name, stringValue, e);
+                    SetPropertyValue(modelProperty, context.Model, stringValue);
                 }
             }
-            else if (destinationType == typeof(string))
+            catch (Exception e)
             {
-                SetPropertyValue(modelProperty, context.Model, stringValue);
+                throw new PropertyBindingException(modelProperty.Name, stringValue, e);
             }
         }
 
@@ -510,7 +515,11 @@ namespace Nancy.ModelBinding
                 return bodyDeserializer.Deserialize(contentType, context.Context.Request.Body, context);
             }
 
+<<<<<<< HEAD
             bodyDeserializer = this.defaults.DefaultBodyDeserializers.FirstOrDefault(b => b.CanDeserialize(contentType, context));
+=======
+            bodyDeserializer = this.defaults.DefaultBodyDeserializers.FirstOrDefault(b => b.CanDeserialize(contentType));
+>>>>>>> added unit test and fixed ordering of type converters
 
             return bodyDeserializer != null ?
                 bodyDeserializer.Deserialize(contentType, context.Context.Request.Body, context) :
