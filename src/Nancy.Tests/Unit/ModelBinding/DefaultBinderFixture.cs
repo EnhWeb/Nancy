@@ -292,7 +292,6 @@ namespace Nancy.Tests.Unit.ModelBinding
         }
 
         [Fact]
-<<<<<<< HEAD
         public void Should_not_throw_ModelBindingException_if_convertion_of_property_fails_and_ignore_error_is_true()
         {
             // Given
@@ -312,19 +311,21 @@ namespace Nancy.Tests.Unit.ModelBinding
         public void Should_set_remaining_properties_when_one_fails_and_ignore_error_is_enabled()
         {
             // Given
-            var binder = this.GetBinder(typeConverters: new[] { new FallbackConverter() });
-            var context = new NancyContext { Request = new FakeRequest("GET", "/") };
+            var binder = this.GetBinder(typeConverters: new[] {new FallbackConverter()});
+            var context = new NancyContext {Request = new FakeRequest("GET", "/")};
             context.Request.Form["IntProperty"] = "badint";
             context.Request.Form["AnotherIntProperty"] = 10;
 
-            var config = new BindingConfig { IgnoreErrors = true };
+            var config = new BindingConfig {IgnoreErrors = true};
 
             // When
-            var model = binder.Bind(context, typeof(TestModel), null, config) as TestModel;
-            
+            var model = binder.Bind(context, typeof (TestModel), null, config) as TestModel;
+
             // Then
             model.AnotherIntProperty.ShouldEqual(10);
-=======
+        }
+
+        [Fact]
         public void Should_throw_ModelBindingException_if_convertion_of_a_property_fails_with_bad_date()
         {
             // Given
@@ -342,7 +343,7 @@ namespace Nancy.Tests.Unit.ModelBinding
                                                                         &&
                                                                         pe.InnerException.Message ==
                                                                         "The string was not recognized as a valid DateTime. There is an unknown word starting at index 0."));
->>>>>>> added unit test and fixed ordering of type converters
+
         }
 
         [Fact]
