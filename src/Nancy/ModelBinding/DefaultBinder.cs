@@ -319,9 +319,9 @@ namespace Nancy.ModelBinding
 
         private static bool IsDefaultValue(object existingValue, Type propertyType)
         {
-            return propertyType.IsValueType
-                ? Equals(existingValue, Activator.CreateInstance(propertyType))
-                : existingValue == null;
+            return propertyType.IsValueType ? 
+                Equals(existingValue, Activator.CreateInstance(propertyType)) : 
+                existingValue == null;
         }
 
         private BindingContext CreateBindingContext(NancyContext context, Type modelType, object instance, BindingConfig configuration, IEnumerable<string> blackList, Type genericType)
@@ -342,11 +342,11 @@ namespace Nancy.ModelBinding
         private IDictionary<string, string> GetDataFields(NancyContext context)
         {
             var dictionaries = new IDictionary<string, string>[]
-                {
-                    ConvertDynamicDictionary(context.Request.Form), 
-                    ConvertDynamicDictionary(context.Request.Query), 
-                    ConvertDynamicDictionary(context.Parameters)
-                };
+            {
+                ConvertDynamicDictionary(context.Request.Form),
+                ConvertDynamicDictionary(context.Request.Query),
+                ConvertDynamicDictionary(context.Parameters)
+            };
 
             return dictionaries.Merge();
         }
@@ -367,8 +367,9 @@ namespace Nancy.ModelBinding
         {
             var destinationType = modelProperty.PropertyType;
 
-            var typeConverter =
-                context.TypeConverters.FirstOrDefault(c => c.CanConvertTo(destinationType, context));
+            var typeConverter = context.TypeConverters
+                                       .OrderBy(x => x.Order)
+                                       .FirstOrDefault(c => c.CanConvertTo(destinationType, context));
 
             if (typeConverter != null)
             {
@@ -391,8 +392,9 @@ namespace Nancy.ModelBinding
         {
             var destinationType = modelProperty.PropertyType;
 
-            var typeConverter =
-                context.TypeConverters.FirstOrDefault(c => c.CanConvertTo(destinationType, context));
+            var typeConverter = context.TypeConverters
+                                   .OrderBy(x => x.Order)
+                                   .FirstOrDefault(c => c.CanConvertTo(destinationType, context));
 
             if (typeConverter != null)
             {
@@ -470,11 +472,11 @@ namespace Nancy.ModelBinding
             {
 
                 var indexindexes = context.RequestData.Keys.Select(IsMatch)
-                                           .Where(i => i != -1)
-                                           .OrderBy(i => i)
-                                           .Distinct()
-                                           .Select((k, i) => new KeyValuePair<int, int>(i, k))
-                                           .ToDictionary(k => k.Key, v => v.Value);
+                                          .Where(i => i != -1)
+                                          .OrderBy(i => i)
+                                          .Distinct()
+                                          .Select((k, i) => new KeyValuePair<int, int>(i, k))
+                                          .ToDictionary(k => k.Key, v => v.Value);
 
                 if (indexindexes.ContainsKey(index))
                 {
