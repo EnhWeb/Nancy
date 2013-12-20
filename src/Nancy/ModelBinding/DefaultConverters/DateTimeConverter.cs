@@ -1,6 +1,7 @@
 ﻿namespace Nancy.ModelBinding.DefaultConverters
 {
     using System;
+    using System.Globalization;
 
     /// <summary>
     /// Converter for datetime types
@@ -37,7 +38,15 @@
                 return null;
             }
 
-            return System.Convert.ChangeType(input, destinationType, context.Context.Culture);
+            DateTime result;
+            var culture = context.Context.Culture ?? CultureInfo.CurrentCulture;
+
+            if (DateTime.TryParse(input, culture.DateTimeFormat, DateTimeStyles.None, out result))
+            {
+                return result;
+            }
+
+            throw new FormatException("The string was not recognized as a valid DateTime. There is an unknown word starting at index 0.");
         }
     }
 }
