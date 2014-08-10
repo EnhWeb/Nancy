@@ -98,7 +98,7 @@ namespace Nancy
         NancyModule.ViewRenderer View { get; }
 
         /// <summary>
-        /// Used to nedotiate the content returned based on Accepts header. 
+        /// Used to negotiate the content returned based on Accepts header. 
         /// </summary>
         /// <value>A <see cref="Negotiator"/> instance that is used to negotiate the content returned.</value>
         Negotiator Negotiate { get; }

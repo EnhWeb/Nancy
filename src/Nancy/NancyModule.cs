@@ -152,7 +152,7 @@ namespace Nancy
         }
 
         /// <summary>
-        /// Used to nedotiate the content returned based on Accepts header. 
+        /// Used to negotiate the content returned based on Accepts header. 
         /// </summary>
         /// <value>A <see cref="Negotiator"/> instance that is used to negotiate the content returned.</value>
         public Negotiator Negotiate
