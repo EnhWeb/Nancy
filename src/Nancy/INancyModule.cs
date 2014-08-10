@@ -94,8 +94,8 @@ namespace Nancy
         /// <summary>
         /// Renders a view from inside a route handler.
         /// </summary>
-        /// <value>A <see cref="NancyModule.ViewRenderer"/> instance that is used to determin which view that should be rendered.</value>
-        NancyModule.ViewRenderer View { get; }
+        /// <value>A <see cref="ViewRenderer"/> instance that is used to determin which view that should be rendered.</value>
+        ViewRenderer View { get; }
 
         /// <summary>
         /// Used to negotiate the content returned based on Accepts header. 
