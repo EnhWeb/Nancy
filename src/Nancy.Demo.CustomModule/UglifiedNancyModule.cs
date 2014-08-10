@@ -45,7 +45,7 @@
 
         public string ModulePath { get; private set; }
 
-        public ViewRenderer View
+        public NancyModule.ViewRenderer View
         {
             get { return new ViewRenderer(this); }
         }
@@ -153,7 +153,7 @@
         /// <summary>
         /// Helper class for rendering a view from a route handler.
         /// </summary>
-        public class ViewRenderer : IHideObjectMembers
+        public class ViewRenderer : NancyModule.ViewRenderer, IHideObjectMembers
         {
             private readonly INancyModule module;
 
@@ -161,7 +161,7 @@
             /// Initializes a new instance of the <see cref="ViewRenderer"/> class.
             /// </summary>
             /// <param name="module">The <see cref="INancyModule"/> instance that is rendering the view.</param>
-            public ViewRenderer(INancyModule module)
+            public ViewRenderer(INancyModule module) : base(module)
             {
                 this.module = module;
             }
@@ -172,7 +172,7 @@
             /// <param name="model">The model that should be passed into the view.</param>
             /// <returns>A delegate that can be invoked with the <see cref="Stream"/> that the view should be rendered to.</returns>
             /// <remarks>The view name is model.GetType().Name with any Model suffix removed.</remarks>
-            public Negotiator this[dynamic model]
+            public new Negotiator this[dynamic model]
             {
                 get { return this.GetNegotiator(null, model); }
             }
@@ -183,7 +183,7 @@
             /// <param name="viewName">The name of the view to render.</param>
             /// <returns>A delegate that can be invoked with the <see cref="Stream"/> that the view should be rendered to.</returns>
             /// <remarks>The extension in the view name is optional. If it is omitted, then Nancy will try to resolve which of the available engines that should be used to render the view.</remarks>
-            public Negotiator this[string viewName]
+            public new Negotiator this[string viewName]
             {
                 get { return this.GetNegotiator(viewName, null); }
             }
@@ -195,7 +195,7 @@
             /// <param name="model">The model that should be passed into the view.</param>
             /// <returns>A delegate that can be invoked with the <see cref="Stream"/> that the view should be rendered to.</returns>
             /// <remarks>The extension in the view name is optional. If it is omitted, then Nancy will try to resolve which of the available engines that should be used to render the view.</remarks>
-            public Negotiator this[string viewName, dynamic model]
+            public new Negotiator this[string viewName, dynamic model]
             {
                 get { return this.GetNegotiator(viewName, model); }
             }
