@@ -26,6 +26,8 @@
                         attributeBuilder.Append(valuePrefix);
                     }
 
+                    stringValue = value.Value.Item1 is NonEncodedHtmlString ? stringValue : HtmlEncode(stringValue);
+
                     attributeBuilder.Append(stringValue);
                     writtenAttribute = true;
                 }
