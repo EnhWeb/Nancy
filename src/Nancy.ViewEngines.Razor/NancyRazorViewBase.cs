@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Text;
+    using Nancy.Helpers;
 
     /// <summary>
     /// Default base class for nancy razor views
@@ -413,7 +415,6 @@
                 this.SectionContents.Add(section.Key, this.contents.ToString());
             }
         }
-<<<<<<< HEAD
 
         /// <summary>
         /// Html encodes an object if required
@@ -433,7 +434,5 @@
 
             return str != null ? str.ToHtmlString() : HttpUtility.HtmlEncode(Convert.ToString(value, currentCulture));
         }
-=======
->>>>>>> c52be35ce646698a4f3e23aa628a812c1516b40c
     }
 }
